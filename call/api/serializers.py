@@ -15,20 +15,34 @@ class CallSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
     def validate(self, attrs):
-        origin_number = attrs.get('source', None)
-        destination_number = attrs.get('destination', None)
-        if origin_number:
-            if not origin_number.isdigit():
+        source = attrs.get('source', None)
+        destination = attrs.get('destination', None)
+        type = attrs.get('type')
+        call_id = attrs.get('call_id')
+        timestamp = attrs.get('timestamp')
+        if source:
+            if not source.isdigit():
                 raise serializers.ValidationError('The origin number field must be only numbers.')
-            if len(origin_number) < 8:
+            if len(source) < 8:
                 raise serializers.ValidationError('The size of origin number field should be '
                                                   'between 8 and 11 characters.')
-        if destination_number:
-            if not destination_number.isdigit():
+        if destination:
+            if not destination.isdigit():
                 raise serializers.ValidationError('The destination number field must be only numbers.')
-            if len(destination_number) < 8:
+            if len(destination) < 8:
                 raise serializers.ValidationError('The size of destination number field should be '
                                                   'between 8 and 11 characters.')
+        if type == Constants.END:
+            call = Call.objects.filter(type=Constants.START, call_id=call_id)
+            if call:
+                if timestamp < call[0].timestamp:
+                    raise serializers.ValidationError(
+                        'Invalid timestamp. Must be grater then {}'.format(call[0].timestamp)
+                    )
+            else:
+                raise serializers.ValidationError(
+                    'Does not exist a call start entry with this call id: {}'.format(call_id)
+                )
         return attrs
 
     def create(self, validated_data):
