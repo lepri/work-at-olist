@@ -1,0 +1,282 @@
+[
+  {
+    "model": "call.call",
+    "pk": 1,
+    "fields": {
+      "type": "start",
+      "timestamp": "2016-02-29T12:00:00Z",
+      "call_id": 70,
+      "source": "99988526423",
+      "destination": "9993468278"
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 2,
+    "fields": {
+      "type": "end",
+      "timestamp": "2016-02-29T14:00:00Z",
+      "call_id": 70,
+      "source": null,
+      "destination": null
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 3,
+    "fields": {
+      "type": "start",
+      "timestamp": "2017-12-12T15:07:13Z",
+      "call_id": 71,
+      "source": "99988526423",
+      "destination": "9993468278"
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 4,
+    "fields": {
+      "type": "end",
+      "timestamp": "2017-12-12T15:14:56Z",
+      "call_id": 71,
+      "source": null,
+      "destination": null
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 5,
+    "fields": {
+      "type": "start",
+      "timestamp": "2017-12-12T22:47:56Z",
+      "call_id": 72,
+      "source": "99988526423",
+      "destination": "9993468278"
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 6,
+    "fields": {
+      "type": "end",
+      "timestamp": "2017-12-12T22:50:56Z",
+      "call_id": 72,
+      "source": null,
+      "destination": null
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 7,
+    "fields": {
+      "type": "start",
+      "timestamp": "2017-12-12T21:57:13Z",
+      "call_id": 73,
+      "source": "99988526423",
+      "destination": "9993468278"
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 8,
+    "fields": {
+      "type": "end",
+      "timestamp": "2017-12-12T22:10:56Z",
+      "call_id": 73,
+      "source": null,
+      "destination": null
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 9,
+    "fields": {
+      "type": "start",
+      "timestamp": "2017-12-12T04:57:13Z",
+      "call_id": 74,
+      "source": "99988526423",
+      "destination": "9993468278"
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 10,
+    "fields": {
+      "type": "end",
+      "timestamp": "2017-12-12T06:10:56Z",
+      "call_id": 74,
+      "source": null,
+      "destination": null
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 11,
+    "fields": {
+      "type": "start",
+      "timestamp": "2017-12-12T21:57:13Z",
+      "call_id": 75,
+      "source": "99988526423",
+      "destination": "9993468278"
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 12,
+    "fields": {
+      "type": "end",
+      "timestamp": "2017-12-13T22:10:56Z",
+      "call_id": 75,
+      "source": null,
+      "destination": null
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 13,
+    "fields": {
+      "type": "start",
+      "timestamp": "2017-12-12T15:07:58Z",
+      "call_id": 76,
+      "source": "99988526423",
+      "destination": "9993468278"
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 14,
+    "fields": {
+      "type": "end",
+      "timestamp": "2017-12-12T15:12:56Z",
+      "call_id": 76,
+      "source": null,
+      "destination": null
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 15,
+    "fields": {
+      "type": "end",
+      "timestamp": "2018-03-01T22:10:56Z",
+      "call_id": 77,
+      "source": null,
+      "destination": null
+    }
+  },
+  {
+    "model": "call.call",
+    "pk": 16,
+    "fields": {
+      "type": "start",
+      "timestamp": "2018-02-28T21:57:13Z",
+      "call_id": 77,
+      "source": "99988526423",
+      "destination": "9993468278"
+    }
+  },
+  {
+    "model": "call.bill",
+    "pk": 1,
+    "fields": {
+      "destination": 1,
+      "start_date": "2016-02-29",
+      "start_time": "12:00:00",
+      "duration": "2h0m0s",
+      "month": 2,
+      "year": 2016,
+      "price": "11.16"
+    }
+  },
+  {
+    "model": "call.bill",
+    "pk": 2,
+    "fields": {
+      "destination": 3,
+      "start_date": "2017-12-12",
+      "start_time": "15:07:13",
+      "duration": "0h7m43s",
+      "month": 12,
+      "year": 2017,
+      "price": "0.99"
+    }
+  },
+  {
+    "model": "call.bill",
+    "pk": 3,
+    "fields": {
+      "destination": 5,
+      "start_date": "2017-12-12",
+      "start_time": "22:47:56",
+      "duration": "0h3m0s",
+      "month": 12,
+      "year": 2017,
+      "price": "0.36"
+    }
+  },
+  {
+    "model": "call.bill",
+    "pk": 4,
+    "fields": {
+      "destination": 7,
+      "start_date": "2017-12-12",
+      "start_time": "21:57:13",
+      "duration": "0h13m43s",
+      "month": 12,
+      "year": 2017,
+      "price": "0.54"
+    }
+  },
+  {
+    "model": "call.bill",
+    "pk": 5,
+    "fields": {
+      "destination": 9,
+      "start_date": "2017-12-12",
+      "start_time": "04:57:13",
+      "duration": "1h13m43s",
+      "month": 12,
+      "year": 2017,
+      "price": "1.26"
+    }
+  },
+  {
+    "model": "call.bill",
+    "pk": 6,
+    "fields": {
+      "destination": 11,
+      "start_date": "2017-12-12",
+      "start_time": "21:57:13",
+      "duration": "24h13m43s",
+      "month": 12,
+      "year": 2017,
+      "price": "86.94"
+    }
+  },
+  {
+    "model": "call.bill",
+    "pk": 7,
+    "fields": {
+      "destination": 13,
+      "start_date": "2017-12-12",
+      "start_time": "15:07:58",
+      "duration": "0h4m58s",
+      "month": 12,
+      "year": 2017,
+      "price": "0.72"
+    }
+  },
+  {
+    "model": "call.bill",
+    "pk": 8,
+    "fields": {
+      "destination": 16,
+      "start_date": "2018-02-28",
+      "start_time": "21:57:13",
+      "duration": "24h13m43s",
+      "month": 3,
+      "year": 2018,
+      "price": "86.94"
+    }
+  }
+]
