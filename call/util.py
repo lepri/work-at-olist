@@ -37,7 +37,7 @@ class CalculateBill:
 
         while call_start < call_end:
             call_start = call_start + timedelta(minutes=1)
-            if call_start < call_end and time(6, 0, 0) < call_start.time() < time(22, 0, 0):
+            if call_start <= call_end and time(6, 0, 0) <= call_start.time() <= time(22, 0, 0):
                 minutes += 1
 
         subtotal = minutes * Constants.CHARGE_MINUTE
