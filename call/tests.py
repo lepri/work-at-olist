@@ -4,7 +4,7 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from call.models import Call
+from call.models import Call, Bill
 from call.config import Constants
 
 
@@ -51,7 +51,7 @@ class CallModelTests(TestCase):
             timestamp='2016-02-29T14:10:00Z',
             call_id=70
         )
-        with self.assertRaises(MultipleObjectsReturned):
+        with self.assertRaises(ValidationError):
             call.full_clean()
 
 
@@ -71,12 +71,12 @@ class CallEndPointTestCase(TestCase):
             "call_id": 78,
             "destination": "9993468278",
             "source": "99988526423",
-            "timestamp": "2018-07-07 15:07:13",
+            "timestamp": "2018-07-07 15:07:13+00:00",
             "type": Constants.START
         }
         self.post_data_end = {
             "call_id": 78,
-            "timestamp": "2018-07-07 15:14:56",
+            "timestamp": "2018-07-07 15:14:56+00:00",
             "type": Constants.END
         }
 
@@ -157,13 +157,6 @@ class CallEndPointTestCase(TestCase):
 
     def test_no_type_call(self):
         """Test the API for create a new call with no type
-        Should return 400 BAD REQUEST and a dict with the error
-        ::
-            {
-                'call': {
-                    'type': ['This field cannot be null.']
-                }
-            }
         """
         del self.post_data_start['type']
         response = self.create_call(Constants.START)
@@ -175,11 +168,6 @@ class CallEndPointTestCase(TestCase):
 
     def teste_invalid_timestamp_call(self):
         """Test the API for create a new call with an invalid timestamp
-        Should return 400 BAD REQUEST and a dict with the error
-        ::
-            {
-                'error': "Datetime provided to 'timestamp' field doesn't appear to be a valid datetime string: <timestamp>."
-            }
         """
         self.post_data_start['timestamp'] = "2018-99-99 00:00:00"
         response = self.create_call(Constants.START)
@@ -192,61 +180,68 @@ class CallEndPointTestCase(TestCase):
             response.json()
         )
 
-    def test_invalid_start_call(self):
-        """Test the API for create a new start call without source and destination arguments
-        Should return 400 BAD REQUEST and a dict with the errors
-        ::
-            {
-                'call': {
-                    'destination': ['This field is required'],
-                    'source': ['This field is required']
-                }
-            }
-        """
-        del self.post_data_start['source']
-        del self.post_data_start['destination']
-        response = self.create_call(Constants.START)
-        self.assertEquals(400, response.status_code)
-        self.assertEquals(
-            {'call': {'destination': ['This field is required.'], 'source': ['This field is required.']}},
-            response.json()
-        )
-
     def test_invalid_call_end_call_id(self):
         """Test the API for create a new end call with invalid call_id
-        Should return 400 BAD REQUEST and a dict with the error
-        ::
-            {
-                'call': {
-                    'call_id': ['Does not exist a call start entry with this call id: <call_id>.']
-                }
-            }
         """
         self.post_data_end['call_id'] = 999
         self.create_call(Constants.START)
         response = self.create_call(Constants.END)
         self.assertEquals(400, response.status_code)
         self.assertEquals(
-            {'call': {'call_id': ['Does not exist a call start entry with this call id: 999']}},
+            {'non_field_errors': ['Does not exist a call start entry with this call id: 999']},
             response.json()
         )
 
     def test_invalid_call_end_timestamp(self):
         """Test the API for create a new end call with invalid timestamp
-        Should return 400 BAD REQUEST and a dict with the error
-        ::
-            {
-                'call': {
-                    'timestamp': ['Invalid timestamp. Must be grater then <start_call.timestamp>.']
-                }
-            }
         """
         self.post_data_end['timestamp'] = "2018-07-06 15:07:13"
         self.create_call(Constants.START)
         response = self.create_call(Constants.END)
         self.assertEquals(400, response.status_code)
         self.assertEquals(
-            {'call': {
-                'timestamp': ["Invalid timestamp. Must be grater then {}".format(self.post_data_start['timestamp'])]}},
+            {'non_field_errors': ["Invalid timestamp. Must be grater then {}".format(self.post_data_start['timestamp'])]},
             response.json()
         )
+
+
+class BillsTests(TestCase):
+    CALL_URL = '/api/v1/call/'
+    BILL_URL = '/api/v1/bill/'
+
+    @classmethod
+    def setUpClass(cls):
+        super(BillsTests, cls).setUpClass()
+        cls.client = APIClient()
+
+    def test_bill_creation(self):
+        response = self.client.post(self.CALL_URL, {
+            "type": Constants.START,
+            "timestamp": "2016-02-19T12:00:00Z",
+            "call_id": 70,
+            "source": "99988526423",
+            "destination": "9993468278"
+        })
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Call.objects.count(), 1)
+        self.assertEqual(Bill.objects.count(), 0)
+        # to create a bill it' necessary to create the end call request
+        response = self.client.post(self.CALL_URL, {
+            "type": Constants.END,
+            "timestamp": "2016-02-19T12:50:00Z",
+            "call_id": 70,
+        })
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Call.objects.count(), 2)
+        self.assertEqual(Bill.objects.count(), 1)
+
+        response = self.client.get(self.BILL_URL + '99988526423/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        bills = response.json()
+        self.assertEqual(len(bills), 0)
+
+        response = self.client.get(self.BILL_URL + '99988526423/2016/02/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        bills = response.json()
+        self.assertEqual(len(bills), 1)
+        self.assertEqual(bills[0]['price'], 'R$ 4,86')
