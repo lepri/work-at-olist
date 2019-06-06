@@ -217,7 +217,7 @@ class BillsTests(TestCase):
     def test_bill_creation(self):
         response = self.client.post(self.CALL_URL, {
             "type": Constants.START,
-            "timestamp": "2016-02-19T12:00:00Z",
+            "timestamp": "2016-02-19T21:57:13Z",
             "call_id": 70,
             "source": "99988526423",
             "destination": "9993468278"
@@ -228,7 +228,7 @@ class BillsTests(TestCase):
         # to create a bill it' necessary to create the end call request
         response = self.client.post(self.CALL_URL, {
             "type": Constants.END,
-            "timestamp": "2016-02-19T12:50:00Z",
+            "timestamp": "2016-02-19T22:10:56Z",
             "call_id": 70,
         })
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -244,4 +244,4 @@ class BillsTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         bills = response.json()
         self.assertEqual(len(bills), 1)
-        self.assertEqual(bills[0]['price'], 'R$ 4,86')
+        self.assertEqual(bills[0]['price'], 'R$ 0,54')
